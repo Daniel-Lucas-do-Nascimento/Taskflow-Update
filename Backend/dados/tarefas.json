@@ -1,18 +1,18 @@
 [
     {
         "id": 1,
-        "titulo": "r",
-        "descricao": "r",
-        "prioridade": "r",
-        "prazo": "20",
-        "status": "pendente"
+        "titulo": "Primeira",
+        "descricao": "Minha Primeira tarefa criada.",
+        "prioridade": "baixa",
+        "prazo": "20/10/2026",
+        "status": "Finalizado"
     },
     {
         "id": 2,
-        "titulo": "r",
-        "descricao": "r",
-        "prioridade": "alta",
-        "prazo": "14/02/2026",
-        "status": "Finalizado"
+        "titulo": "Ler um Livro.",
+        "descricao": "",
+        "prioridade": "média",
+        "prazo": "14/10/2026",
+        "status": "pendente"
     }
 ]
