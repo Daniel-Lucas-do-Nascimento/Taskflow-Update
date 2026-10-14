@@ -65,3 +65,7 @@ Se o frontend e a API estiverem em portas diferentes, o backend precisará permi
 ## Limite importante
 
 O frontend não se conecta diretamente ao arquivo `dados/tarefas.json`. A comunicação deve acontecer por uma API Python. As rotas acima são uma proposta de contrato; se seu backend tiver outras funções/rotas, o adaptador `taskApi` deve ser ajustado para elas.
+
+# Como Abrir no navegador do Computador
+Digitando:
+http://127.0.0.1:5500/Frontend/TaskFlow_Frontend/index.html

@@ -4,8 +4,10 @@
  * Quando seu backend Python tiver uma API HTTP pronta, mude para false
  * e ajuste API_BASE e os caminhos em apiRequest() / taskApi abaixo.
  */
+
 const DEMO_MODE = false;
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = `http://${window.location.hostname}:8000`;
+
 
 const STORAGE_KEY = "taskflow_demo_tasks_v1";
 const $ = (selector) => document.querySelector(selector);

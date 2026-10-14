@@ -9,26 +9,43 @@ CORS(app)
 
 
 def status_para_frontend(status):
-    if str(status).lower() in ["finalizado", "concluído", "concluido", "concluída", "concluida"]:
+    if str(status).lower() in [
+        "finalizado",
+        "concluído",
+        "concluido",
+        "concluída",
+        "concluida"
+    ]:
         return "concluída"
+
     return "pendente"
 
 
 def status_para_backend(status):
-    if str(status).lower() in ["concluída", "concluida", "concluído", "concluido", "finalizado"]:
+    if str(status).lower() in [
+        "concluída",
+        "concluida",
+        "concluído",
+        "concluido",
+        "finalizado"
+    ]:
         return "Finalizado"
+
     return "pendente"
 
 
 def preparar_tarefa(tarefa):
     tarefa = tarefa.copy()
-    tarefa["status"] = status_para_frontend(tarefa.get("status"))
+    tarefa["status"] = status_para_frontend(
+        tarefa.get("status", "pendente")
+    )
     return tarefa
 
 
 @app.get("/api/tarefas")
 def listar_tarefas():
-    return jsonify([preparar_tarefa(t) for t in ler_json()])
+    tarefas = ler_json()
+    return jsonify([preparar_tarefa(t) for t in tarefas])
 
 
 @app.post("/api/tarefas")
@@ -36,8 +53,16 @@ def adicionar_tarefa():
     dados = request.get_json(silent=True) or {}
 
     titulo = str(dados.get("titulo", "")).strip()
+
     if not titulo:
         return jsonify({"erro": "O título é obrigatório."}), 400
+
+    prioridade = str(
+        dados.get("prioridade", "média")
+    ).strip().lower()
+
+    if prioridade not in ["baixa", "média", "alta"]:
+        return jsonify({"erro": "Prioridade inválida."}), 400
 
     tarefas = ler_json()
 
@@ -45,13 +70,10 @@ def adicionar_tarefa():
         "id": gerar_id(),
         "titulo": titulo,
         "descricao": str(dados.get("descricao", "")).strip(),
-        "prioridade": str(dados.get("prioridade", "média")).strip().lower(),
+        "prioridade": prioridade,
         "prazo": str(dados.get("prazo", "")).strip(),
         "status": "pendente"
     }
-
-    if tarefa["prioridade"] not in ["baixa", "média", "alta"]:
-        return jsonify({"erro": "Prioridade inválida."}), 400
 
     tarefas.append(tarefa)
     salvar_json(tarefas)
@@ -66,22 +88,36 @@ def editar_tarefa(id_tarefa):
 
     for i, tarefa in enumerate(tarefas):
         if tarefa["id"] == id_tarefa:
-            titulo = str(dados.get("titulo", tarefa["titulo"])).strip()
+            titulo = str(
+                dados.get("titulo", tarefa["titulo"])
+            ).strip()
 
             if not titulo:
-                return jsonify({"erro": "O título é obrigatório."}), 400
+                return jsonify({
+                    "erro": "O título é obrigatório."
+                }), 400
+
+            prioridade = str(
+                dados.get("prioridade", tarefa["prioridade"])
+            ).strip().lower()
+
+            if prioridade not in ["baixa", "média", "alta"]:
+                return jsonify({
+                    "erro": "Prioridade inválida."
+                }), 400
 
             tarefa_atualizada = {
                 "id": tarefa["id"],
                 "titulo": titulo,
-                "descricao": str(dados.get("descricao", tarefa["descricao"])).strip(),
-                "prioridade": str(dados.get("prioridade", tarefa["prioridade"])).strip().lower(),
-                "prazo": str(dados.get("prazo", tarefa["prazo"])).strip(),
+                "descricao": str(
+                    dados.get("descricao", tarefa["descricao"])
+                ).strip(),
+                "prioridade": prioridade,
+                "prazo": str(
+                    dados.get("prazo", tarefa["prazo"])
+                ).strip(),
                 "status": tarefa["status"]
             }
-
-            if tarefa_atualizada["prioridade"] not in ["baixa", "média", "alta"]:
-                return jsonify({"erro": "Prioridade inválida."}), 400
 
             tarefas[i] = tarefa_atualizada
             salvar_json(tarefas)
@@ -105,6 +141,7 @@ def alterar_status(id_tarefa):
         if tarefa["id"] == id_tarefa:
             tarefa["status"] = status_para_backend(status)
             salvar_json(tarefas)
+
             return jsonify(preparar_tarefa(tarefa))
 
     return jsonify({"erro": "Tarefa não encontrada."}), 404
@@ -123,8 +160,13 @@ def excluir_tarefa(id_tarefa):
         return jsonify({"erro": "Tarefa não encontrada."}), 404
 
     salvar_json(novas_tarefas)
+
     return "", 204
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(
+        host="0.0.0.0",
+        debug=True,
+        port=8000
+    )
