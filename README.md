@@ -177,6 +177,12 @@ Em desenvolvimento.
 
 Novas funcionalidades e melhorias poderão ser adicionadas conforme a evolução do projeto.
 
+
+## 📸 Demonstração
+
+![TaskFlow 2.0 - Menu principal](assets/taskflow.png)
+
+
 ## Autor
 
 Desenvolvido como projeto de aprendizado do curso de desenvolvimento de software, frontend feito com a ajuda da I.A, backend feito totalmete pelo próprio autor.
