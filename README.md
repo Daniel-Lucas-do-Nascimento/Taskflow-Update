@@ -180,7 +180,7 @@ Novas funcionalidades e melhorias poderão ser adicionadas conforme a evolução
 
 ## 📸 Demonstração
 
-![TaskFlow 2.0 - Menu principal](assets/taskflow.png)
+![TaskFlow 2.0 - Menu principal](Assets/taskflow.png)
 
 
 ## Autor
